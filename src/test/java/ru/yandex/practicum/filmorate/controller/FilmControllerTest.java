@@ -17,7 +17,7 @@ public class FilmControllerTest {
                 "name",
                 "descriprion",
                 LocalDate.of(2004, 7, 8),
-                Duration.ofMinutes(120)
+                120
         );
         Assertions.assertTrue(filmController.isValidate(film), "Правильный фильм не проходит проверку");
     }
@@ -32,7 +32,7 @@ public class FilmControllerTest {
                         "Long description!Long description!Long description!Long description!" +
                         "Long description!Long description!Long description!Long description!",
                 LocalDate.of(2004, 7, 8),
-                Duration.ofMinutes(120)
+                120
         );
 
         try {
@@ -48,7 +48,7 @@ public class FilmControllerTest {
                 "name",
                 "descriprion",
                 LocalDate.of(1880, 7, 8),
-                Duration.ofMinutes(120)
+                120
         );
         try {
             filmController.isValidate(film);
@@ -63,7 +63,7 @@ public class FilmControllerTest {
                 "name",
                 "descriprion",
                 LocalDate.of(2004, 7, 8),
-                Duration.ofMinutes(-120)
+                -120
         );
         try {
             filmController.isValidate(film);

@@ -17,9 +17,9 @@ public class Film {
     private String name;
     private String description;
     private LocalDate releaseDate;
-    private Duration duration;
+    private Integer duration;
 
-    public Film(@NonNull String name, String descriprion, LocalDate releaseDate, Duration duration) {
+    public Film(@NonNull String name, String descriprion, LocalDate releaseDate, Integer duration) {
         this.name = name;
         this.description = descriprion;
         this.releaseDate = releaseDate;

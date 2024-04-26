@@ -71,7 +71,7 @@ public class FilmController {
             log.warn("Длина описания больше 200 символов.");
             throw new ValidationException("Длина описания больше 200 символов.");
         }
-        if (film.getDuration().isNegative()) {
+        if (film.getDuration() < 0) {
             log.warn("Продолжительность фильма должна быть положительной.");
             throw new ValidationException("Продолжительность фильма должна быть положительной.");
         }
