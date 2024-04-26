@@ -35,9 +35,9 @@ public class FilmControllerTest {
                 Duration.ofMinutes(120)
         );
 
-        try{
+        try {
             filmController.isValidate(film);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Длина описания больше 200 символов.", e.getMessage(), "Ошибка с длинным описанием неправильно обрабатывается");
         }
     }
@@ -50,9 +50,9 @@ public class FilmControllerTest {
                 LocalDate.of(1880, 7, 8),
                 Duration.ofMinutes(120)
         );
-        try{
+        try {
             filmController.isValidate(film);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Недопустимая дата релиза.", e.getMessage(), "Ошибка даты релиза неправильно обрабатывается");
         }
     }
@@ -65,9 +65,9 @@ public class FilmControllerTest {
                 LocalDate.of(2004, 7, 8),
                 Duration.ofMinutes(-120)
         );
-        try{
+        try {
             filmController.isValidate(film);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Продолжительность фильма должна быть положительной.", e.getMessage(), "Ошибка некорректной длительности неправильно обрабатывается");
         }
     }

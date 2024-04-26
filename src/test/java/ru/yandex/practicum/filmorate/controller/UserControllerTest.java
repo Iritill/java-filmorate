@@ -43,9 +43,9 @@ class UserControllerTest {
                 LocalDate.of(2004, 7, 8)
         );
 
-        try{
+        try {
             userController.isValidate(user);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Логин пустой.", e.getMessage(), "Ошибка с пустым логином неправильно обрабатывается");
         }
     }
@@ -58,9 +58,9 @@ class UserControllerTest {
                 "name",
                 LocalDate.of(2004, 7, 8)
         );
-        try{
+        try {
             userController.isValidate(user);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Логин содержит пробелы.", e.getMessage(), "Ошибка логина с пробелами неправильно обрабатывается");
         }
     }
@@ -73,9 +73,9 @@ class UserControllerTest {
                 "name",
                 LocalDate.of(2034, 7, 8)
         );
-        try{
+        try {
             userController.isValidate(user);
-        } catch (ValidationException e){
+        } catch (ValidationException e) {
             Assertions.assertEquals("Некорректная дата рождения.", e.getMessage(), "Ошибка некорректной даты неправильно обрабатывается");
         }
     }

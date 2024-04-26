@@ -20,12 +20,12 @@ public class FilmController {
     private final LocalDate minDateRelease = LocalDate.of(1895, Month.DECEMBER, 28);
 
     @GetMapping
-    public Collection<Film> allFilms(){
+    public Collection<Film> allFilms() {
         return films.values();
     }
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film){
+    public Film addFilm(@Valid @RequestBody Film film) {
         //Проверка на соответствие определенным критериям.
         isValidate(film);
         log.info("Валидация прошла успешно");
@@ -36,7 +36,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film newFilm){
+    public Film updateFilm(@RequestBody Film newFilm) {
         if (newFilm.getId() == null) {
             log.warn("Id должен быть указан");
             throw new ValidationException("Id должен быть указан");
@@ -44,16 +44,16 @@ public class FilmController {
         isValidate(newFilm);
         log.info("Валидация прошла успешно");
         Film oldFilm = films.get(newFilm.getId());
-        if(newFilm.getDescription() != null){
+        if (newFilm.getDescription() != null) {
             oldFilm.setDescription(newFilm.getDescription());
         }
-        if(newFilm.getName() != null){
+        if (newFilm.getName() != null) {
             oldFilm.setName(newFilm.getName());
         }
-        if(newFilm.getDuration() != null){
+        if (newFilm.getDuration() != null) {
             oldFilm.setDuration(newFilm.getDuration());
         }
-        if(newFilm.getReleaseDate() != null){
+        if (newFilm.getReleaseDate() != null) {
             oldFilm.setReleaseDate(newFilm.getReleaseDate());
         }
         log.debug("Обновление фильма {} прошло успешно", oldFilm);
@@ -62,16 +62,16 @@ public class FilmController {
 
     }
 
-    public boolean isValidate(Film film){
-        if(minDateRelease.isAfter(film.getReleaseDate())){
+    public boolean isValidate(Film film) {
+        if (minDateRelease.isAfter(film.getReleaseDate())) {
             log.warn("Недопустимая дата релиза.");
             throw new ValidationException("Недопустимая дата релиза.");
         }
-        if(film.getDescription().length() > 200){
+        if (film.getDescription().length() > 200) {
             log.warn("Длина описания больше 200 символов.");
             throw new ValidationException("Длина описания больше 200 символов.");
         }
-        if(film.getDuration().isNegative()){
+        if (film.getDuration().isNegative()) {
             log.warn("Продолжительность фильма должна быть положительной.");
             throw new ValidationException("Продолжительность фильма должна быть положительной.");
         }

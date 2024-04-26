@@ -22,15 +22,15 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@Valid @RequestBody User user){
+    public User addUser(@Valid @RequestBody User user) {
         //Проверка на соответствие определенным критериям.
         isValidate(user);
         log.info("Валидация успешно пройдена");
-        if(user.getName() == null){
+        if (user.getName() == null) {
             user.setName(user.getLogin());
             log.debug("Имя было null. Теперь его значение {}", user.getLogin());
         }
-        if(user.getName().isEmpty()){
+        if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
             log.debug("Имя было пустым. Теперь его значение {}", user.getLogin());
         }
@@ -41,23 +41,23 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User newUser){
+    public User updateUser(@RequestBody User newUser) {
         if (newUser.getId() == null) {
             log.warn("Id должен быть указан");
             throw new ValidationException("Id должен быть указан");
         }
         isValidate(newUser);
         User oldUser = users.get(newUser.getId());
-        if(newUser.getEmail() != null){
+        if (newUser.getEmail() != null) {
             oldUser.setEmail(newUser.getEmail());
         }
-        if(newUser.getName() != null){
+        if (newUser.getName() != null) {
             oldUser.setName(newUser.getName());
         }
-        if(newUser.getLogin() != null){
+        if (newUser.getLogin() != null) {
             oldUser.setLogin(newUser.getLogin());
         }
-        if(newUser.getBirthday() != null){
+        if (newUser.getBirthday() != null) {
             oldUser.setBirthday(newUser.getBirthday());
         }
         log.debug("Пользователь {} успешно обновлен", oldUser);
@@ -65,17 +65,17 @@ public class UserController {
 
     }
 
-    public boolean isValidate(User user){
-        if(user.getLogin().isEmpty()){
+    public boolean isValidate(User user) {
+        if (user.getLogin().isEmpty()) {
             log.warn("Логин пустой.");
             throw new ValidationException("Логин пустой.");
         }
-        if(user.getLogin().contains(" ")){
+        if (user.getLogin().contains(" ")) {
             log.warn("Логин содержит пробелы.");
             throw new ValidationException("Логин содержит пробелы.");
 
         }
-        if(user.getBirthday().isAfter(LocalDate.now())){
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.warn("Некорректная дата рождения.");
             throw new ValidationException("Некорректная дата рождения.");
 
