@@ -16,8 +16,9 @@ import java.util.Map;
 @Slf4j
 public class UserController {
     private final Map<Long, User> users = new HashMap<Long, User>();
+
     @GetMapping
-    public Collection<User> allUsers(){
+    public Collection<User> allUsers() {
         return users.values();
     }
 
