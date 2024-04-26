@@ -22,7 +22,7 @@ public class User {
         this.email = email;
         this.login = login;
         this.name = name;
-        if(name == null || name.isBlank()) this.name = login;
+        if (name == null || name.isBlank()) this.name = login;
         this.birthday = birthday;
     }
 }
