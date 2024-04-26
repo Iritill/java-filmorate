@@ -63,7 +63,6 @@ public class UserController {
         log.debug("Пользователь {} успешно обновлен", oldUser);
         return oldUser;
 
-
     }
 
     public boolean isValidate(User user){
@@ -92,7 +91,5 @@ public class UserController {
                 .orElse(0);
         return ++currentMaxId;
     }
-
-
 
 }

@@ -12,7 +12,6 @@ class UserControllerTest {
 
     static UserController userController = new UserController();
 
-
     @Test
     void validateUser() {
         final User user = new User(
