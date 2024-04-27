@@ -24,13 +24,8 @@ public class UserController {
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         //Проверка на соответствие определенным критериям.
-        if (user.getName() == null) {
+        if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
-            log.debug("Имя было null. Теперь его значение {}", user.getLogin());
-        }
-        if (user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-            log.debug("Имя было пустым. Теперь его значение {}", user.getLogin());
         }
         user.setId(getNextId());
         users.put(user.getId(), user);

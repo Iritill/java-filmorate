@@ -4,13 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.annotations.WithoutSpace;
 
 import java.time.LocalDate;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class User {
     private Long id;
     @Email
