@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +24,6 @@ public class UserController {
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         //Проверка на соответствие определенным критериям.
-        isValidate(user);
-        log.info("Валидация успешно пройдена");
         if (user.getName() == null) {
             user.setName(user.getLogin());
             log.debug("Имя было null. Теперь его значение {}", user.getLogin());
@@ -42,12 +39,15 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User newUser) {
+    public User updateUser(@Valid @RequestBody User newUser) {
         if (newUser.getId() == null) {
             log.warn("Id должен быть указан");
             throw new ValidationException("Id должен быть указан");
         }
-        isValidate(newUser);
+        if (!users.containsKey(newUser.getId())) {
+            log.warn("Пользователя с id {} не существует", newUser.getId());
+            throw new ValidationException("Пользователь с id " + newUser.getId() + " не найден.");
+        }
         User oldUser = users.get(newUser.getId());
         if (newUser.getEmail() != null) {
             oldUser.setEmail(newUser.getEmail());
@@ -66,23 +66,6 @@ public class UserController {
 
     }
 
-    public boolean isValidate(User user) {
-        if (user.getLogin().isEmpty()) {
-            log.warn("Логин пустой.");
-            throw new ValidationException("Логин пустой.");
-        }
-        if (user.getLogin().contains(" ")) {
-            log.warn("Логин содержит пробелы.");
-            throw new ValidationException("Логин содержит пробелы.");
-
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.warn("Некорректная дата рождения.");
-            throw new ValidationException("Некорректная дата рождения.");
-
-        }
-        return true;
-    }
 
     private long getNextId() {
         long currentMaxId = users.keySet()

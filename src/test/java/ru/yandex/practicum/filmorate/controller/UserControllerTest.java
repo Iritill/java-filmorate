@@ -1,16 +1,22 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.junit.jupiter.api.Assertions;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 //Не совсем понимаю как проверить некорректный email. Ведь я пометил его аннотацией @Email.
 class UserControllerTest {
 
-    static UserController userController = new UserController();
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     void validateUser() {
@@ -20,7 +26,21 @@ class UserControllerTest {
                 "name",
                 LocalDate.of(2004, 7, 8)
         );
-        Assertions.assertTrue(userController.isValidate(user), "Правильный пользователь не проходит проверку");
+        validator.validate(user);
+    }
+
+    @Test
+    void validateUserEmail() {
+        final User user = new User(
+                "useryandex.ru",
+                "login",
+                "",
+                LocalDate.of(2004, 7, 8)
+        );
+        List<ConstraintViolation<User>> violations = new ArrayList<>(validator.validate(user));
+        //Проверка на кол-ва ошибок и на наличие конкретной ошибки валидации
+        assertEquals(1, violations.size());
+        assertEquals("email", violations.get(0).getPropertyPath().toString());
     }
 
     @Test
@@ -31,7 +51,7 @@ class UserControllerTest {
                 "",
                 LocalDate.of(2004, 7, 8)
         );
-        Assertions.assertTrue(userController.isValidate(user), "Правильный пользователь не проходит проверку");
+        validator.validate(user);
     }
 
     @Test
@@ -43,11 +63,12 @@ class UserControllerTest {
                 LocalDate.of(2004, 7, 8)
         );
 
-        try {
-            userController.isValidate(user);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Логин пустой.", e.getMessage(), "Ошибка с пустым логином неправильно обрабатывается");
-        }
+        List<ConstraintViolation<User>> violations = new ArrayList<>(validator.validate(user));
+        //Проверка на кол-ва ошибок и на наличие конкретной ошибки валидации
+        assertEquals(1, violations.size());
+        assertEquals("login", violations.get(0).getPropertyPath().toString());
+        //Проверка, что собственная валидация не пересекается с встроенной
+        assertNotEquals("В логине пробел", violations.get(0).getPropertyPath().toString());
     }
 
     @Test
@@ -58,11 +79,11 @@ class UserControllerTest {
                 "name",
                 LocalDate.of(2004, 7, 8)
         );
-        try {
-            userController.isValidate(user);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Логин содержит пробелы.", e.getMessage(), "Ошибка логина с пробелами неправильно обрабатывается");
-        }
+        List<ConstraintViolation<User>> violations = new ArrayList<>(validator.validate(user));
+        //Проверка на кол-ва ошибок и на наличие конкретной ошибки валидации
+        assertEquals(1, violations.size());
+        assertEquals("login", violations.get(0).getPropertyPath().toString());
+        assertEquals("В логине пробел", violations.get(0).getMessage());
     }
 
     @Test
@@ -73,11 +94,10 @@ class UserControllerTest {
                 "name",
                 LocalDate.of(2034, 7, 8)
         );
-        try {
-            userController.isValidate(user);
-        } catch (ValidationException e) {
-            Assertions.assertEquals("Некорректная дата рождения.", e.getMessage(), "Ошибка некорректной даты неправильно обрабатывается");
-        }
+        List<ConstraintViolation<User>> violations = new ArrayList<>(validator.validate(user));
+        //Проверка на кол-ва ошибок и на наличие конкретной ошибки валидации
+        assertEquals(1, violations.size());
+        assertEquals("birthday", violations.get(0).getPropertyPath().toString());
     }
 
 }
