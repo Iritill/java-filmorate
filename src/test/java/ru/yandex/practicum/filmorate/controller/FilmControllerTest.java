@@ -57,7 +57,7 @@ public class FilmControllerTest {
         //Проверка на кол-ва ошибок и на наличие конкретной ошибки валидации
         assertEquals(1, violations.size());
         assertEquals("releaseDate", violations.get(0).getPropertyPath().toString());
-        assertEquals("Дата раньше 28 декабря 1985 года.", violations.get(0).getMessage());
+        assertEquals("Дата раньше 28 декабря 1895 года.", violations.get(0).getMessage());
     }
 
     @Test
