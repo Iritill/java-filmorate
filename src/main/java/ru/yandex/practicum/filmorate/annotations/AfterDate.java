@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AfterDateValidator.class)
 public @interface AfterDate {
-    String message() default "Дата раньше 28 декабря 1985 года.";
+    String message() default "Дата раньше 28 декабря 1895 года.";
 
     Class<?>[] groups() default {};
 
