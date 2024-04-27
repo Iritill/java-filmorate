@@ -13,7 +13,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-//Не совсем понимаю как проверить некорректный email. Ведь я пометил его аннотацией @Email.
 class UserControllerTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
