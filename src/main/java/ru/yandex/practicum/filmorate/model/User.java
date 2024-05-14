@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.annotations.WithoutSpace;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class User {
     private String name;
     @PastOrPresent
     private LocalDate birthday;
+    private Set<Long> friendsList = new HashSet<>();
 
     public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;
