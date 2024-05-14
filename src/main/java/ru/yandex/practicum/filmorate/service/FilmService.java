@@ -16,10 +16,11 @@ import static java.lang.Integer.parseInt;
 @Slf4j
 public class FilmService {
     private final InMemoryFilmStorage inMemoryFilmStorage;
-    private  final InMemoryUserStorage inMemoryUserStorage
+    private  final InMemoryUserStorage inMemoryUserStorage;
 
     public FilmService(InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage) {
         this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
     public void usersSetLikeForFilm(Long id, Long userId) {
