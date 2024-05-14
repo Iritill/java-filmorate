@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
 
+    @Getter
     private final Map<Long, User> users = new HashMap<Long, User>();
 
     @Override
