@@ -27,6 +27,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (!films.containsKey(id)) {
             throw new ObjectNotFoundException("Фильм с id: " + id + " не найдет!");
         }
+        log.debug("Вывод фильма с id: {}", id);
         return films.get(id);
     }
 

@@ -28,6 +28,7 @@ public class FilmService {
             throw new ObjectNotFoundException("Пользователь с id: " + userId + " не найдет!");
         }
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().add(userId);
+        log.info("пользваотель с id: {} поставил лайк фильму с id: {}", userId, id);
     }
 
     public void usersDeleteLikeForFilm(Long id, Long userId) {
@@ -35,6 +36,8 @@ public class FilmService {
             throw new ObjectNotFoundException("Пользователь с id: " + userId + " не найдет!");
         }
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().remove(userId);
+        log.info("пользваотель с id: {} удалил лайк с фильма с id: {}", userId, id);
+
     }
 
     public List<Film> mostLikeFilm(String count) {

@@ -22,11 +22,15 @@ public class UserService {
     public void addFriend(Long id, Long friendId) {
         inMemoryUserStorage.getUserById(id).getFriendsList().add(friendId);
         inMemoryUserStorage.getUserById(friendId).getFriendsList().add(id);
+        log.info("Пользователи с id: {} и {} добавлены в друзья", id, friendId);
+
     }
 
     public void deleteFriend(Long id, Long friendId) {
         inMemoryUserStorage.getUserById(id).getFriendsList().remove(friendId);
         inMemoryUserStorage.getUserById(friendId).getFriendsList().remove(id);
+        log.info("Пользователи с id: {} и {} удалены из друзей", id, friendId);
+
     }
 
     public List<User> allFriends(Long id) {
@@ -34,6 +38,7 @@ public class UserService {
         for (Long idFriend : inMemoryUserStorage.getUserById(id).getFriendsList()) {
             usersForReturn.add(inMemoryUserStorage.getUserById(idFriend));
         }
+        log.debug("Вывод друзей пользователя с id: {}", id);
         return usersForReturn;
     }
 
@@ -44,6 +49,7 @@ public class UserService {
         for (Long idFriend : firstSet) {
             usersForReturn.add(inMemoryUserStorage.getUserById(idFriend));
         }
+        log.debug("Вывод общих друзей пользователей с id: {} и {}", id, otherId);
         return usersForReturn;
     }
 }
