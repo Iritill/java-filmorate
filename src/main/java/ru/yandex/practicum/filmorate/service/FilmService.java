@@ -24,15 +24,15 @@ public class FilmService {
     }
 
     public void usersSetLikeForFilm(Long id, Long userId) {
-        if (!inMemoryUserStorage.getUsers().containsKey(id)) {
-            throw new ObjectNotFoundException("Пользователь с id: " + id + " не найдет!");
+        if (!inMemoryUserStorage.getUsers().containsKey(userId)) {
+            throw new ObjectNotFoundException("Пользователь с id: " + userId + " не найдет!");
         }
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().add(userId);
     }
 
     public void usersDeleteLikeForFilm(Long id, Long userId) {
-        if (!inMemoryUserStorage.getUsers().containsKey(id)) {
-            throw new ObjectNotFoundException("Пользователь с id: " + id + " не найдет!");
+        if (!inMemoryUserStorage.getUsers().containsKey(userId)) {
+            throw new ObjectNotFoundException("Пользователь с id: " + userId + " не найдет!");
         }
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().remove(userId);
     }
