@@ -1,37 +1,32 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.util.*;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
-    private final InMemoryUserStorage inMemoryUserStorage;
     private final UserService userService;
 
-    public UserController(InMemoryUserStorage inMemoryUserStorage, UserService userService) {
-        this.inMemoryUserStorage = inMemoryUserStorage;
-        this.userService = userService;
-    }
-
     @GetMapping
-    public Collection<User> allUsers() {
-        return inMemoryUserStorage.allUsers();
+    public Collection<User> getAllUsers() {
+        return userService.getInMemoryUserStorage().allUsers();
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> allFriends(@PathVariable("id") Long id) {
+    public List<User> getAllFriends(@PathVariable("id") Long id) {
         return userService.allFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> commonFriends(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
-        return userService.commonFriends(id,otherId);
+    public List<User> getCommonFriends(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
+        return userService.getCommonFriends(id,otherId);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
@@ -46,19 +41,17 @@ public class UserController {
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
-
-        return inMemoryUserStorage.addUser(user);
+        return userService.getInMemoryUserStorage().addUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User newUser) {
-
-        return inMemoryUserStorage.updateUser(newUser);
+        return userService.getInMemoryUserStorage().updateUser(newUser);
 
     }
 
     @GetMapping("/{id}")
     public User findUser(@PathVariable("id") Long id) {
-        return inMemoryUserStorage.getUserById(id);
+        return userService.getInMemoryUserStorage().getUserById(id);
     }
 }

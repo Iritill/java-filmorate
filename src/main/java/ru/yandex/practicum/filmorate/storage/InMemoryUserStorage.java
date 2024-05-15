@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
-import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
@@ -28,7 +28,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Long id) {
         if (!users.containsKey(id)) {
-            throw new ObjectNotFoundException("Пользователь с id: " + id + " не найдет!");
+            throw new NotFoundException("Пользователь с id: " + id + " не найдет!");
         }
         log.debug("Вывод пользователя с id: {}", id);
         return users.get(id);
@@ -59,7 +59,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
         if (!users.containsKey(newUser.getId())) {
             log.warn("Пользователя с id {} не существует", newUser.getId());
-            throw new ObjectNotFoundException("Пользователь с id " + newUser.getId() + " не найден.");
+            throw new NotFoundException("Пользователь с id " + newUser.getId() + " не найден.");
         }
         User oldUser = users.get(newUser.getId());
         if (newUser.getEmail() != null) {
