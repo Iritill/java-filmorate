@@ -16,12 +16,12 @@ public class UserController {
 
     @GetMapping
     public Collection<User> getAllUsers() {
-        return userService.getInMemoryUserStorage().allUsers();
+        return userService.getInMemoryUserStorage().getAllUsers();
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getAllFriends(@PathVariable("id") Long id) {
-        return userService.allFriends(id);
+        return userService.getAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")

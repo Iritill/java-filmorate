@@ -21,7 +21,7 @@ public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<Long, User>();
 
     @Override
-    public Collection<User> allUsers() {
+    public Collection<User> getAllUsers() {
         return users.values();
     }
 

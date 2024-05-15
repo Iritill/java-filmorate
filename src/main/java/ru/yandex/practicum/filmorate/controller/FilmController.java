@@ -17,7 +17,7 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> allFilms() {
-        return filmService.getInMemoryFilmStorage().allFilms();
+        return filmService.getInMemoryFilmStorage().getAllFilms();
     }
 
     @PostMapping

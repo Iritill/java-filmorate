@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.Collection;
 
 public interface FilmStorage {
-    public Collection<Film> allFilms();
+    public Collection<Film> getAllFilms();
 
     public Film getFilmById(Long id);
 

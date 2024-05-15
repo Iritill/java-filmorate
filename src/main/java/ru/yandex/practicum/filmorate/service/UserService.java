@@ -34,7 +34,7 @@ public class UserService {
 
     }
 
-    public List<User> allFriends(Long id) {
+    public List<User> getAllFriends(Long id) {
         ArrayList<User> usersForReturn = new ArrayList<>();
         for (Long idFriend : inMemoryUserStorage.getUserById(id).getFriendsList()) {
             usersForReturn.add(inMemoryUserStorage.getUserById(idFriend));

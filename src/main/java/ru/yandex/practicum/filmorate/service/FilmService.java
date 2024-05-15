@@ -41,7 +41,7 @@ public class FilmService {
     }
 
     public List<Film> getPopularFilms(String count) {
-        List<Film> films = inMemoryFilmStorage.allFilms().stream().toList();
+        List<Film> films = inMemoryFilmStorage.getAllFilms().stream().toList();
         return films.stream()
                 .sorted((film1, film2) -> film2.getUsersLikes().size() - film1.getUsersLikes().size())
                 .limit(parseInt(count))
