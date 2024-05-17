@@ -17,17 +17,17 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> allFilms() {
-        return filmService.getInMemoryFilmStorage().getAllFilms();
+        return filmService.getAllFilms();
     }
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        return filmService.getInMemoryFilmStorage().addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film newFilm) {
-        return filmService.getInMemoryFilmStorage().updateFilm(newFilm);
+        return filmService.updateFilm(newFilm);
     }
 
     @GetMapping("/popular")
@@ -47,6 +47,6 @@ public class FilmController {
 
     @GetMapping("/{id}")
     public Film findFilm(@PathVariable("id") Long id) {
-        return filmService.getInMemoryFilmStorage().getFilmById(id);
+        return filmService.getFilmById(id);
     }
 }

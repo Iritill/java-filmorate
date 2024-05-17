@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping
     public Collection<User> getAllUsers() {
-        return userService.getInMemoryUserStorage().getAllUsers();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}/friends")
@@ -41,17 +41,17 @@ public class UserController {
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
-        return userService.getInMemoryUserStorage().addUser(user);
+        return userService.addUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User newUser) {
-        return userService.getInMemoryUserStorage().updateUser(newUser);
+        return userService.updateUser(newUser);
 
     }
 
     @GetMapping("/{id}")
     public User findUser(@PathVariable("id") Long id) {
-        return userService.getInMemoryUserStorage().getUserById(id);
+        return userService.getUserById(id);
     }
 }

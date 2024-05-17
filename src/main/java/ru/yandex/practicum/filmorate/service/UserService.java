@@ -1,24 +1,36 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Getter
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
-    private final InMemoryUserStorage inMemoryUserStorage;
+    private final UserStorage inMemoryUserStorage;
+
+    public Collection<User> getAllUsers() {
+        return inMemoryUserStorage.getAllUsers();
+    }
+
+    public User getUserById(Long id) {
+        return inMemoryUserStorage.getUserById(id);
+    }
+
+    public User addUser(User user) {
+        return inMemoryUserStorage.addUser(user);
+    }
+
+    public User updateUser(User newUser) {
+        return inMemoryUserStorage.updateUser(newUser);
+
+    }
 
     public void addFriend(Long id, Long friendId) {
         inMemoryUserStorage.getUserById(id).getFriendsList().add(friendId);

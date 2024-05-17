@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,23 +16,33 @@ import static java.lang.Integer.parseInt;
 @Slf4j
 @RequiredArgsConstructor
 public class FilmService {
+    private final FilmStorage inMemoryFilmStorage;
+    private  final UserStorage inMemoryUserStorage;
 
-    @Getter
-    private final InMemoryFilmStorage inMemoryFilmStorage;
-    private  final InMemoryUserStorage inMemoryUserStorage;
+    public Collection<Film> getAllFilms() {
+        return inMemoryFilmStorage.getAllFilms();
+    }
+
+    public Film getFilmById(Long id) {
+        return inMemoryFilmStorage.getFilmById(id);
+    }
+
+    public Film addFilm(Film film) {
+        return inMemoryFilmStorage.addFilm(film);
+    }
+
+    public Film updateFilm(Film newFilm) {
+        return inMemoryFilmStorage.updateFilm(newFilm);
+    }
 
     public void setLikeForFilm(Long id, Long userId) {
-        if (!inMemoryUserStorage.getUsers().containsKey(userId)) {
-            throw new NotFoundException("Пользователь с id: " + userId + " не найдет!");
-        }
+        inMemoryUserStorage.getUserById(userId);
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().add(userId);
         log.info("пользваотель с id: {} поставил лайк фильму с id: {}", userId, id);
     }
 
     public void deleteLikeForFilm(Long id, Long userId) {
-        if (!inMemoryUserStorage.getUsers().containsKey(userId)) {
-            throw new NotFoundException("Пользователь с id: " + userId + " не найдет!");
-        }
+        inMemoryUserStorage.getUserById(userId);
         inMemoryFilmStorage.getFilmById(id).getUsersLikes().remove(userId);
         log.info("пользваотель с id: {} удалил лайк с фильма с id: {}", userId, id);
 
