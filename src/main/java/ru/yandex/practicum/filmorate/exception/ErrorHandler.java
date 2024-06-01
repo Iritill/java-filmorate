@@ -36,24 +36,6 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleAlreadyExistsException(final MpaNotFoundException e) {
-        return new ErrorResponse(
-                "Mpa не верен",
-                e.getMessage()
-        );
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleAlreadyExistsException(final GenreNotFoundException e) {
-        return new ErrorResponse(
-                "Genre не верен",
-                e.getMessage()
-        );
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handlerAnyException(final RuntimeException e) {
         return new ErrorResponse(

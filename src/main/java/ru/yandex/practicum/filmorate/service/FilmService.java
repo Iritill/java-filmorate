@@ -3,9 +3,8 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.GenreNotFoundException;
-import ru.yandex.practicum.filmorate.exception.MpaNotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -45,11 +44,11 @@ public class FilmService {
     public Film create(Film film) {
         List<Genre> genres = genreStorage.getIds(film.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
         if (genres.size() != film.getGenres().size()) {
-            throw new GenreNotFoundException("Genres не найден");
+            throw new ValidationException("Список жанров неверен");
         }
         Mpa mpa = mpaStorage.getById(film.getMpa().getId());
         if (mpa == null) {
-            throw new MpaNotFoundException("Mpa не найден");
+            throw new ValidationException("Mpa не найден");
         }
         return filmStorage.create(film);
     }
@@ -57,12 +56,12 @@ public class FilmService {
     public Film update(Film film) {
         List<Genre> genres = genreStorage.getIds(film.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
         if (genres.size() != film.getGenres().size()) {
-            throw new GenreNotFoundException("Genres не найден");
+            throw new ValidationException("Список жанров не верен");
         }
 
         isFilmExist(film.getId());
         if (mpaStorage.getById(film.getMpa().getId()) == null) {
-            throw new MpaNotFoundException("Mpa не найден");
+            throw new ValidationException("Mpa не найден");
         }
         return filmStorage.update(film);
     }
