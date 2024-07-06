@@ -1,68 +1,77 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.interfaces.FriendStorage;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
-@Service
 @Slf4j
-@RequiredArgsConstructor
+@Service
 public class UserService {
+    private final UserStorage userStorage;
+    private final FriendStorage friendStorage;
 
-    private final UserStorage inMemoryUserStorage;
-
-    public Collection<User> getAllUsers() {
-        return inMemoryUserStorage.getAllUsers();
+    @Autowired
+    public UserService(UserStorage userStorage, FriendStorage friendStorage) {
+        this.userStorage = userStorage;
+        this.friendStorage = friendStorage;
     }
 
-    public User getUserById(Long id) {
-        return inMemoryUserStorage.getUserById(id);
+    public List<User> getAll() {
+        return userStorage.getAll();
     }
 
-    public User addUser(User user) {
-        return inMemoryUserStorage.addUser(user);
+    public User getById(Long id) {
+        return getExistingUser(id);
     }
 
-    public User updateUser(User newUser) {
-        return inMemoryUserStorage.updateUser(newUser);
-
+    public User create(User user) {
+        return userStorage.create(user);
     }
 
-    public void addFriend(Long id, Long friendId) {
-        inMemoryUserStorage.getUserById(id).getFriendsList().add(friendId);
-        inMemoryUserStorage.getUserById(friendId).getFriendsList().add(id);
-        log.info("Пользователи с id: {} и {} добавлены в друзья", id, friendId);
-
+    public User update(User user) {
+        getExistingUser(user.getId());
+        return userStorage.update(user);
     }
 
-    public void deleteFriend(Long id, Long friendId) {
-        inMemoryUserStorage.getUserById(id).getFriendsList().remove(friendId);
-        inMemoryUserStorage.getUserById(friendId).getFriendsList().remove(id);
-        log.info("Пользователи с id: {} и {} удалены из друзей", id, friendId);
-
-    }
-
-    public List<User> getAllFriends(Long id) {
-        ArrayList<User> usersForReturn = new ArrayList<>();
-        for (Long idFriend : inMemoryUserStorage.getUserById(id).getFriendsList()) {
-            usersForReturn.add(inMemoryUserStorage.getUserById(idFriend));
+    public void addFriend(Long userId, Long friendId) {
+        if (Objects.equals(userId, friendId)) {
+            throw new ValidationException("Попытка добавление самого себя в друзья");
         }
-        log.debug("Вывод друзей пользователя с id: {}", id);
-        return usersForReturn;
+        getExistingUser(userId);
+        getExistingUser(friendId);
+        friendStorage.addFriend(userId, friendId);
     }
 
-    public List<User> getCommonFriends(Long id, Long otherId) {
-        Set<Long> firstSet = new HashSet<Long>(inMemoryUserStorage.getUserById(id).getFriendsList());
-        firstSet.retainAll(inMemoryUserStorage.getUserById(otherId).getFriendsList());
-        ArrayList<User> usersForReturn = new ArrayList<>();
-        for (Long idFriend : firstSet) {
-            usersForReturn.add(inMemoryUserStorage.getUserById(idFriend));
+    public void removeFriend(Long userId, Long friendId) {
+        getById(userId);
+        getById(friendId);
+        friendStorage.removeFriend(userId, friendId);
+    }
+
+    public List<User> getFriendsList(Long userId) {
+        getExistingUser(userId);
+        return friendStorage.getFriends(userId);
+    }
+
+    public List<User> getCommonFriends(Long userId, Long friendId) {
+        getExistingUser(userId);
+        getExistingUser(friendId);
+        return friendStorage.getCommonFriends(userId, friendId);
+    }
+
+    private User getExistingUser(long id) {
+        User user = userStorage.getById(id);
+        if (user == null) {
+            throw new NotFoundException("User не существует");
         }
-        log.debug("Вывод общих друзей пользователей с id: {} и {}", id, otherId);
-        return usersForReturn;
+        return user;
     }
 }
